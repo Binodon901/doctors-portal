@@ -1,24 +1,38 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { createContext, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
+import Home from './Components/Home/Home';
+import Appointment from './Components/Appointment/Appoinment/Appointment';
+import Login from './Components/Login/Login';
+import Navbar from './Components/Shared/Navbar/Navbar';
+import Register from './Components/Register/Register/Register';
+export const UserContext= createContext();
 
 function App() {
+  const [loggedInUser,setLoggedInUser]=useState({});
+  const loggedInEmail=window.sessionStorage.getItem("email");
+  console.log(loggedInEmail,'Login')
+  //const veri=window.localStorage.getItem("veri");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContext.Provider value={[loggedInUser,setLoggedInUser]}>
+      <h3>email:{loggedInEmail}</h3>
+    <Router>  
+    <Routes>
+      <Route path="/" element={<><Navbar /><Home /></>}>
+      </Route>
+      <Route path="/login" element={<><Navbar /><Login /></>}>
+      </Route>
+      <Route path="/register" element={<Register />}>
+      </Route>
+    </Routes>
+  </Router>
+  </UserContext.Provider>
   );
 }
 
